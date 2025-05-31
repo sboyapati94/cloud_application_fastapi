@@ -1,0 +1,10 @@
+name: fastapi  # Change this to your desired environment name
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - pytest
+  - fastapi
+  - uvicorn
+  - flake8
+  - pip
