@@ -3,6 +3,9 @@ import argparse
 import importlib
 import inspect
 import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 FAIL_COLOR = '\033[91m'
 OK_COLOR = '\033[92m'

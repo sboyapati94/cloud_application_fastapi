@@ -42,7 +42,7 @@ X_test, y_test, _, _ = process_data(
 model = train_model(X_train, y_train)
 
 # Save the model and encoders
-model_dir = os.path.join(os.path.dirname(__file__), '../../model')
+model_dir = os.path.join(os.path.dirname(__file__), '../model')
 os.makedirs(model_dir, exist_ok=True)
 
 joblib.dump(model, os.path.join(model_dir, "model.joblib"))

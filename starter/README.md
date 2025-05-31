@@ -73,3 +73,45 @@ To use your new S3 bucket from the AWS CLI you will need to create an IAM user w
 * Set up DVC on Heroku using the instructions contained in the starter directory.
 * Set up access to AWS on Heroku, if using the CLI: `heroku config:set AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy`
 * Write a script that uses the requests module to do one POST on your live API.
+
+# Quickstart: Running the Project
+
+Follow these steps in order:
+
+1. **Set up the Conda environment**
+   ```zsh
+   conda env create -f environment.yml
+   conda activate fastapi
+   ```
+
+2. **Prepare the data**
+   - Download `census.csv` to `starter/data/` if not already present.
+   - Clean the data:
+     ```zsh
+     python starter/data/clean_data.py
+     ```
+
+3. **Train the model**
+   ```zsh
+   python starter/starter/train_model.py
+   ```
+   This will save the model and encoders to `starter/model/`.
+
+4. **Run unit tests for the model**
+   ```zsh
+   pytest starter/starter/ml/test_model.py
+   ```
+
+5. **Run API unit tests**
+   ```zsh
+   pytest starter/test_main.py
+   ```
+
+6. **Start the FastAPI app**
+   ```zsh
+   uvicorn starter.main:app --reload
+   ```
+   - Visit [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) for the interactive API docs.
+
+7. **Example API usage**
+   - Use the Swagger UI or cURL to test the `/predict` endpoint.
