@@ -23,7 +23,8 @@ def train_model(X_train, y_train):
 
 def compute_model_metrics(y, preds):
     """
-    Validates the trained machine learning model using precision, recall, and F1.
+    Validates the trained machine learning model using precision,
+    recall, and F1.
 
     Inputs
     ------
@@ -37,9 +38,15 @@ def compute_model_metrics(y, preds):
     recall : float
     fbeta : float
     """
-    fbeta = fbeta_score(y, preds, beta=1, zero_division=1)
-    precision = precision_score(y, preds, zero_division=1)
-    recall = recall_score(y, preds, zero_division=1)
+    fbeta = fbeta_score(
+        y, preds, beta=1, zero_division=1
+    )
+    precision = precision_score(
+        y, preds, zero_division=1
+    )
+    recall = recall_score(
+        y, preds, zero_division=1
+    )
     return precision, recall, fbeta
 
 
