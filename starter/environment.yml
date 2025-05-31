@@ -2,7 +2,7 @@ name: fastapi  # Change this to your desired environment name
 channels:
   - conda-forge
 dependencies:
-  - python=3.8.20
+  - python=3.8.18  # Specific patch version for compatibility
   - pytest
   - pytest-cov
   - fastapi
