@@ -12,7 +12,7 @@ import joblib
 from sklearn.model_selection import train_test_split
 
 # Load the clean data
-data = pd.read_csv("data/census_clean.csv")
+data = pd.read_csv("starter/data/census_clean.csv")
 
 cat_features = [
     "workclass",
@@ -42,7 +42,7 @@ X_test, y_test, _, _ = process_data(
 model = train_model(X_train, y_train)
 
 # Save the model and encoders
-model_dir = os.path.join(os.path.dirname(__file__), '../model')
+model_dir = os.path.join(os.path.dirname(__file__), '../../model')
 os.makedirs(model_dir, exist_ok=True)
 
 joblib.dump(model, os.path.join(model_dir, "model.joblib"))

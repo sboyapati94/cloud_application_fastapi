@@ -36,9 +36,9 @@ def test_inference():
 def test_compute_slice_metrics():
     # Load data and artifacts
     data = pd.read_csv("starter/data/census_clean.csv")
-    model = joblib.load("model/model.joblib")
-    encoder = joblib.load("model/encoder.joblib")
-    lb = joblib.load("model/lb.joblib")
+    model = joblib.load("starter/model/model.joblib")
+    encoder = joblib.load("starter/model/encoder.joblib")
+    lb = joblib.load("starter/model/lb.joblib")
     cat_features = [
         "workclass",
         "education",

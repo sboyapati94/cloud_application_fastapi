@@ -7,10 +7,10 @@ from starter.ml.model import compute_slice_metrics
 
 def main():
     # Load data and model artifacts
-    data = pd.read_csv("data/census_clean.csv")
-    model = joblib.load("model/model.joblib")
-    encoder = joblib.load("model/encoder.joblib")
-    lb = joblib.load("model/lb.joblib")
+    data = pd.read_csv("starter/data/census_clean.csv")
+    model = joblib.load("starter/model/model.joblib")
+    encoder = joblib.load("starter/model/encoder.joblib")
+    lb = joblib.load("starter/model/lb.joblib")
 
     # Define categorical features
     cat_features = [

@@ -73,8 +73,8 @@ def compute_slice_metrics(data, model, encoder, lb, categorical_features, label=
     Computes model performance metrics on slices of the data for each categorical feature.
     Returns a dictionary with metrics for each slice.
     """
-    from starter.starter.ml.data import process_data
-    from starter.starter.ml.model import compute_model_metrics, inference
+    from starter.ml.data import process_data
+    from starter.ml.model import compute_model_metrics, inference
     results = {}
     for feature in categorical_features:
         results[feature] = {}

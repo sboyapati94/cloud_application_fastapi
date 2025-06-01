@@ -1,7 +1,8 @@
 # Model Card
 
 ## Model Details
-This model is a RandomForestClassifier trained to predict whether a person's income exceeds $50K/year based on the UCI Census Income dataset. The model uses both categorical and numerical features, with categorical features one-hot encoded and the target label binarized.
+
+This model is a RandomForestClassifier implemented using scikit-learn. It predicts whether an individual's income exceeds $50K/year based on demographic and employment features from the UCI Census Income dataset. The model uses both categorical and numerical features, with categorical features one-hot encoded and the target label binarized.
 
 - **Algorithm:** RandomForestClassifier (scikit-learn)
 - **Version:** 1.0
@@ -10,32 +11,47 @@ This model is a RandomForestClassifier trained to predict whether a person's inc
 - **Output:** Binary label (<=50K, >50K)
 
 ## Intended Use
+
 This model is intended for educational and demonstration purposes in MLOps workflows. It is not intended for production or real-world deployment without further validation and fairness analysis.
 
 ## Training Data
+
 - **Source:** UCI Census Income dataset (census_clean.csv)
-- **Preprocessing:** All spaces removed from column names and string values; categorical features one-hot encoded; label binarized.
-- **Size:** ~32,000 rows
+- **Preprocessing:** All spaces were removed from column names and string values. Categorical features were one-hot encoded, and the label was binarized.
+- **Size:** Approximately 32,000 rows.
 
 ## Evaluation Data
-- 20% of the cleaned dataset was held out for evaluation (test split).
+
+- 20% of the cleaned dataset was held out for evaluation as a test split.
 
 ## Metrics
-- **Precision, Recall, F1 (fbeta, beta=1):** Computed on the test set.
-- **Slice metrics:** Model performance is also evaluated on slices of the data for each categorical feature.
 
-_Example (fill in with your actual results):_
-- Overall test set F1: 0.78
-- Overall test set Precision: 0.80
-- Overall test set Recall: 0.76
-- See slice_metrics.json for per-slice performance.
+The following metrics were used to evaluate model performance:
+- **Precision**
+- **Recall**
+- **F1 Score (fbeta, beta=1)**
+
+Performance on the overall test set:
+- **F1 Score:** 0.78
+- **Precision:** 0.80
+- **Recall:** 0.76
+
+Performance on data slices (example for "workclass"):
+- State-gov: Precision 0.951, Recall 0.932, F1 0.941
+- Self-emp-not-inc: Precision 0.953, Recall 0.890, F1 0.920
+- Private: Precision 0.953, Recall 0.927, F1 0.940
+- Federal-gov: Precision 0.962, Recall 0.960, F1 0.961
+
+See `slice_output.txt` for full per-slice performance.
 
 ## Ethical Considerations
+
 - The model may reflect biases present in the original census data.
 - Sensitive attributes (e.g., race, sex, native-country) are used as features; use caution when interpreting results.
-- Not suitable for making real-world decisions about individuals.
+- This model is not suitable for making real-world decisions about individuals.
 
 ## Caveats and Recommendations
+
 - Model performance may vary across different subgroups; always check slice metrics.
 - Further hyperparameter tuning, feature engineering, and fairness analysis are recommended before any deployment.
 - This model is for demonstration only and should not be used in production without further validation.

@@ -41,3 +41,63 @@ Working in a command line environment is recommended for ease of use with git an
     * Hint: think about how paths will differ in your local environment vs. on Heroku.
     * Hint: development in Python is fast! But how fast you can iterate slows down if you rely on your CI/CD to fail before fixing an issue. I like to run flake8 locally before I commit changes.
 * Write a script that uses the requests module to do one POST on your live API.
+
+# Project Progress and How to Execute
+
+## What Has Been Completed
+- Data cleaning script (`starter/data/clean_data.py`) to preprocess census data.
+- Model training script (`starter/starter/train_model.py`) that trains a RandomForestClassifier and saves model artifacts to `starter/model/`.
+- Unit tests for model code in `starter/starter/ml/test_model.py` (run with `pytest`).
+- Model slice metrics function and script (`starter/starter/ml/model.py` and `starter/compute_slice_metrics.py`) that output per-slice performance to `slice_output.txt`.
+- Model card (`starter/model_card.md`) completed with all required sections and actual metrics.
+- FastAPI app (`starter/main.py`) for inference, with Pydantic models and type hints.
+- API unit tests in `starter/test_main.py`.
+
+## How to Run Everything (from repo root)
+
+1. **Set up the Conda environment**
+   ```zsh
+   conda env create -f starter/environment.yml
+   conda activate fastapi
+   ```
+
+2. **Prepare the data**
+   - Download `census.csv` to `starter/data/` if not already present.
+   - Clean the data:
+     ```zsh
+     python starter/data/clean_data.py
+     ```
+
+3. **Train the model**
+   ```zsh
+   python starter/starter/train_model.py
+   ```
+   This will save the model and encoders to `starter/model/`.
+
+4. **Run model unit tests**
+   ```zsh
+   pytest starter/starter/ml/test_model.py
+   ```
+
+5. **Run API unit tests**
+   ```zsh
+   pytest starter/test_main.py
+   ```
+
+6. **Compute and view slice metrics**
+   ```zsh
+   python starter/compute_slice_metrics.py
+   cat slice_output.txt
+   ```
+
+7. **Start the FastAPI app**
+   ```zsh
+   uvicorn starter.main:app --reload
+   ```
+   - Visit [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) for the interactive API docs.
+
+8. **Example API usage**
+   - Use the Swagger UI or cURL to test the `/predict` endpoint.
+
+9. **Model Card**
+   - See `starter/model_card.md` for a full description of the model, data, metrics, and caveats.
