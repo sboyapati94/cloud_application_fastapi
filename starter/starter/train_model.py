@@ -12,7 +12,7 @@ import joblib
 from sklearn.model_selection import train_test_split
 
 # Load the clean data
-data = pd.read_csv("starter/data/census_clean.csv")
+data = pd.read_csv("data/census_clean.csv")
 
 cat_features = [
     "workclass",
