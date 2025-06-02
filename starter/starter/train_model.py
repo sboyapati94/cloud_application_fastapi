@@ -1,16 +1,16 @@
 # Script to train machine learning model.
 
-import sys
 import os
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-import pandas as pd
-from ml.data import process_data
-from ml.model import train_model
+import sys
 import joblib
-
+import pandas as pd
 from sklearn.model_selection import train_test_split
+
+# Add the parent directory to the Python path for relative imports
+parent_dir = os.path.dirname(__file__)
+sys.path.insert(0, os.path.abspath(os.path.join(parent_dir, "..")))
+from ml.data import process_data  # noqa: E402
+from ml.model import train_model  # noqa: E402
 
 # Load the clean data
 data = pd.read_csv("starter/data/census_clean.csv")

@@ -1,9 +1,14 @@
+import os
+import pytest
 import requests
 
 
 def test_api_live():
-    # Replace with your deployed API URL
-    API_URL = "https://your-app-name.onrender.com"
+    # Get API URL from environment variable or use localhost
+    API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
+
+    if API_URL == "http://127.0.0.1:8000":
+        pytest.skip("Skipping live API test - no API_URL configured")
 
     # Test GET endpoint
     response = requests.get(f"{API_URL}/")

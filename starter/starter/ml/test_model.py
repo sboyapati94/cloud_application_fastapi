@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import joblib
-from starter.starter.ml.model import (
+from .model import (
     train_model,
     compute_model_metrics,
     inference,
