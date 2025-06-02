@@ -36,7 +36,7 @@ jobs:
         run: pwd
 
       - name: Run sanity fix
-        run: echo 'starter/test_main.py' | PYTHONPATH=. python starter/sanitycheck.py
+        run: echo 'starter/test_main.py' | PYTHONPATH=. python sanitycheck.py
 
       - name: Run flake8
         run: flake8 ./starter --max-line-length=79
