@@ -1,7 +1,7 @@
 from sklearn.metrics import fbeta_score, precision_score, recall_score
+from sklearn.ensemble import RandomForestClassifier
 
 
-# Optional: implement hyperparameter tuning.
 def train_model(X_train, y_train):
     """
     Trains a machine learning model and returns it.
@@ -17,13 +17,15 @@ def train_model(X_train, y_train):
     model
         Trained machine learning model.
     """
-
-    pass
+    model = RandomForestClassifier(random_state=42)
+    model.fit(X_train, y_train)
+    return model
 
 
 def compute_model_metrics(y, preds):
     """
-    Validates the trained machine learning model using precision, recall, and F1.
+    Validates the trained machine learning model using precision,
+    recall, and F1.
 
     Inputs
     ------
@@ -44,7 +46,7 @@ def compute_model_metrics(y, preds):
 
 
 def inference(model, X):
-    """ Run model inferences and return the predictions.
+    """Run model inferences and return the predictions.
 
     Inputs
     ------
@@ -57,4 +59,41 @@ def inference(model, X):
     preds : np.array
         Predictions from the model.
     """
-    pass
+    return model.predict(X)
+
+
+def compute_slice_metrics(
+    data, model, encoder, lb, categorical_features, label="salary"
+):
+    """
+    Computes model performance metrics on slices of the data for each
+    categorical feature. Returns a dictionary with metrics for each slice.
+    """
+    from .data import process_data  # Import locally to avoid circular imports
+    # Use local function references since we're in the same module
+    results = {}
+
+    results = {}
+    for feature in categorical_features:
+        results[feature] = {}
+        for value in data[feature].unique():
+            slice_df = data[data[feature] == value]
+            if slice_df.shape[0] == 0:
+                continue
+            X_slice, y_slice, _, _ = process_data(
+                slice_df,
+                categorical_features=categorical_features,
+                label=label,
+                training=False,
+                encoder=encoder,
+                lb=lb,
+            )
+            preds = inference(model, X_slice)
+            precision, recall, fbeta = compute_model_metrics(y_slice, preds)
+            results[feature][value] = {
+                "precision": precision,
+                "recall": recall,
+                "fbeta": fbeta,
+                "count": len(y_slice),
+            }
+    return results

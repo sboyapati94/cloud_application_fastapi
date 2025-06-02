@@ -4,9 +4,9 @@ name: Manual Workflow
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on pull request events but only for the master branch
-  pull_request_target:
-    types: [opened, reopened]
+  push:
+    branches:
+      - master
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -25,15 +25,18 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.8"
+          python-version: "3.11.9"
+
+      - name: PWD
+        run: pwd
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pytest-cov flake8 fastapi uvicorn
-      
+          pip install -r ./starter/requirements.txt
+
       - name: Run sanity fix
-        run: python ./starter/sanity_fix.py
+        run: echo 'starter/test_main.py' | PYTHONPATH=. python ./starter/sanitycheck.py
 
       - name: Run flake8
         run: flake8 ./starter --max-line-length=79
