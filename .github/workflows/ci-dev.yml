@@ -42,7 +42,7 @@ jobs:
           # Feed the path to your test_main.py into sanitycheck
           echo "starter/test_main.py" | python ./starter/sanitycheck.py
       
-          - name: Run flake8
+      - name: Run flake8
         run: flake8 ./starter --max-line-length=79
 
       - name: Run pytest
