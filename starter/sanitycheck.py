@@ -10,7 +10,6 @@ FAIL_COLOR = "\033[91m"
 OK_COLOR = "\033[92m"
 WARN_COLOR = "\033[93m"
 
-
 def run_sanity_check(test_dir):  # noqa: D401
     """Run a heuristic sanity check on the user's FastAPI tests."""
 
@@ -22,12 +21,12 @@ def run_sanity_check(test_dir):  # noqa: D401
     # introduction
     # ------------------------------------------------------------------
     print(
-        "This script will perform a sanity test to ensure your code meets "
-        + "the criteria in the rubric.\n"
+        "This script will perform a sanity test to ensure your code "
+        "meets the criteria in the rubric.\n"
     )
     print(
-        "Please enter the path to the file that contains your test cases "
-        + "for the GET() and POST() methods"
+        "Please enter the path to the file that contains your test "
+        "cases for the GET() and POST() methods"
     )
     print("The path should be something like\nabc/def/test_xyz.py")
     filepath = input("> ")
@@ -35,49 +34,51 @@ def run_sanity_check(test_dir):  # noqa: D401
     # ------------------------------------------------------------------
     # prepare imports
     # ------------------------------------------------------------------
-    assert path.exists(filepath), (f"File {filepath} does not exist.")
+    assert path.exists(filepath), (
+        f"File {filepath} does not exist."
+    )
 
     # Add project root to sys.path
-    project_root = os.path.abspath(os.path.join(os.path.dirname(filepath), "../.."))
+    project_root = os.path.abspath(
+        os.path.join(os.path.dirname(filepath), "../..")
+    )
     if project_root not in sys.path:
         sys.path.insert(0, project_root)
 
     sys.path.insert(0, os.path.abspath(os.path.dirname(filepath)))
     sys.path.insert(
         0,
-        os.path.abspath(os.path.join(os.path.dirname(filepath), "..")),
+        os.path.abspath(
+            os.path.join(os.path.dirname(filepath), "..")
+        ),
     )
 
-    # Convert path to module name (e.g., starter/test_main.py -> starter.test_main)
+    # Convert path to module name
     module_path = os.path.relpath(filepath, project_root)
-    module_name = module_path.replace("/", ".").replace("\\", ".").rsplit(".", 1)[0]
+    module_name = (
+        module_path.replace("/", ".")
+        .replace("\\", ".")
+        .rsplit(".", 1)[0]
+    )
     module = importlib.import_module(module_name)
 
     # ------------------------------------------------------------------
     # collect test functions
     # ------------------------------------------------------------------
-    test_function_names = list(
-        filter(
-            lambda x: inspect.isfunction(getattr(module, x))
-            and not x.startswith("__"),
-            dir(module),
-        )
-    )
+    test_function_names = [
+        name for name in dir(module)
+        if inspect.isfunction(getattr(module, name))
+        and not name.startswith("__")
+    ]
 
-    test_functions_for_get = list(
-        filter(
-            lambda x: inspect.getsource(getattr(module, x)).find(".get(")
-            != -1,
-            test_function_names,
-        )
-    )
-    test_functions_for_post = list(
-        filter(
-            lambda x: inspect.getsource(getattr(module, x)).find(".post(")
-            != -1,
-            test_function_names,
-        )
-    )
+    test_functions_for_get = [
+        name for name in test_function_names
+        if ".get(" in inspect.getsource(getattr(module, name))
+    ]
+    test_functions_for_post = [
+        name for name in test_function_names
+        if ".post(" in inspect.getsource(getattr(module, name))
+    ]
 
     print("\n============= Sanity Check Report ===========")
     SANITY_TEST_PASSING = True
@@ -95,9 +96,9 @@ def run_sanity_check(test_dir):  # noqa: D401
         print(FAIL_COLOR + "No test cases were detected for the GET() method.")
         print(
             FAIL_COLOR
-            + "\nPlease make sure you have a test case for the GET method. "
-            + "This MUST test both the status code as well as the contents "
-            + "of the request object.\n"
+            + "Please make sure you have a test case for the GET method. "
+            + "This MUST test both the status code as well as the "
+            + "contents of the request object.\n"
         )
         SANITY_TEST_PASSING = False
     else:
@@ -105,7 +106,7 @@ def run_sanity_check(test_dir):  # noqa: D401
             source = inspect.getsource(getattr(module, func))
             if ".status_code" in source:
                 TEST_FOR_GET_METHOD_RESPONSE_CODE = True
-            if ".json" in source or ("json.loads" in source):
+            if ".json" in source or "json.loads" in source:
                 TEST_FOR_GET_METHOD_RESPONSE_BODY = True
 
         if not TEST_FOR_GET_METHOD_RESPONSE_CODE:
@@ -113,8 +114,8 @@ def run_sanity_check(test_dir):  # noqa: D401
             WARNING_COUNT += 1
             print(
                 FAIL_COLOR
-                + "Your test case for GET() does not seem to be testing the "
-                + "response code.\n"
+                + "Your test case for GET() does not seem to be testing "
+                + "the response code.\n"
             )
 
         if not TEST_FOR_GET_METHOD_RESPONSE_BODY:
@@ -122,8 +123,8 @@ def run_sanity_check(test_dir):  # noqa: D401
             WARNING_COUNT += 1
             print(
                 FAIL_COLOR
-                + "Your test case for GET() does not seem to be testing the "
-                + "CONTENTS of the response.\n"
+                + "Your test case for GET() does not seem to be testing "
+                + "the CONTENTS of the response.\n"
             )
 
     # ------------------------------------------------------------------
@@ -164,7 +165,7 @@ def run_sanity_check(test_dir):  # noqa: D401
             source = inspect.getsource(getattr(module, func))
             if ".status_code" in source:
                 TEST_FOR_POST_METHOD_RESPONSE_CODE = True
-            if ".json" in source or ("json.loads" in source):
+            if ".json" in source or "json.loads" in source:
                 TEST_FOR_POST_METHOD_RESPONSE_BODY = True
                 COUNT_POST_METHOD_TEST_FOR_INFERENCE_RESULT += 1
 
@@ -173,16 +174,16 @@ def run_sanity_check(test_dir):  # noqa: D401
             WARNING_COUNT += 1
             print(
                 FAIL_COLOR
-                + "One or more of your test cases for POST() do not seem to "
-                + "be testing the response code.\n"
+                + "One or more of your test cases for POST() do not "
+                + "seem to be testing the response code.\n"
             )
         if not TEST_FOR_POST_METHOD_RESPONSE_BODY:
             print(FAIL_COLOR + f"[{WARNING_COUNT}]")
             WARNING_COUNT += 1
             print(
                 FAIL_COLOR
-                + "One or more of your test cases for POST() do not seem to "
-                + "be testing the contents of the response.\n"
+                + "One or more of your test cases for POST() do not "
+                + "seem to be testing the contents of the response.\n"
             )
 
         if (
@@ -193,8 +194,9 @@ def run_sanity_check(test_dir):  # noqa: D401
             WARNING_COUNT += 1
             print(
                 FAIL_COLOR
-                + "You do not seem to have TWO separate test cases, one for "
-                + "each possible prediction that your model can make."
+                + "You do not seem to have TWO separate test cases, "
+                + "one for each possible prediction that your model "
+                + "can make."
             )
 
     SANITY_TEST_PASSING = (
@@ -211,8 +213,8 @@ def run_sanity_check(test_dir):  # noqa: D401
 
     print(
         WARN_COLOR
-        + "This is a heuristic based sanity testing and cannot guarantee the "
-        + "correctness of your code."
+        + "This is a heuristic based sanity testing and cannot guarantee "
+        + "the correctness of your code."
     )
     print(
         WARN_COLOR
