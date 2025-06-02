@@ -33,7 +33,7 @@ jobs:
           pip install pytest pytest-cov flake8 fastapi uvicorn
       
       - name: Run sanity fix
-        run: python ./starter/sanity_fix.py
+        run: echo 'starter/test_main.py' | PYTHONPATH=. python starter/sanitycheck.py
 
       - name: Run flake8
         run: flake8 ./starter --max-line-length=79
