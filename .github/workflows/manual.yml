@@ -1,25 +1,16 @@
-# Workflow to ensure whenever a Github PR is submitted, 
-# a JIRA ticket gets created automatically. 
-name: Manual Workflow
+name: CI on Dev Branch
 
-# Controls when the action will run. 
 on:
   push:
     branches:
       - master
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
 jobs:
   run-ci:
-    name: Run PyTest and Flake8
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: starter  # Tells all steps to use the starter folder
+
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up Python
@@ -27,19 +18,24 @@ jobs:
         with:
           python-version: "3.11.9"
 
-      - name: PWD
-        run: pwd
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          # 1) Main requirements (fastapi, sklearn, pandas, etc.)
           pip install -r ./starter/requirements.txt
+          # 2) Test & lint tools
+          pip install pytest pytest-cov flake8 httpx
 
-      - name: Run sanity fix
-        run: echo 'starter/test_main.py' | PYTHONPATH=. python ./starter/sanitycheck.py
+      - name: Clean up pycache
+        run: find . -type d -name "__pycache__" -exec rm -rf {} +
 
-      - name: Run flake8
+      - name: Run sanity checks
+        run: |
+          export PYTHONPATH=.
+          echo "starter/test_main.py" | python ./starter/sanitycheck.py
+
+      - name: Lint with Flake8
         run: flake8 ./starter --max-line-length=79
 
-      - name: Run pytest
+      - name: Run PyTest with coverage
         run: pytest ./starter -v --cov=./starter --cov-report=xml
