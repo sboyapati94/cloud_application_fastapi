@@ -10,6 +10,7 @@ FAIL_COLOR = "\033[91m"
 OK_COLOR = "\033[92m"
 WARN_COLOR = "\033[93m"
 
+
 def run_sanity_check(test_dir):  # noqa: D401
     """Run a heuristic sanity check on the user's FastAPI tests."""
 
@@ -230,9 +231,7 @@ if __name__ == "__main__":
         metavar="test_dir",
         nargs="?",
         default="tests",
-        help=(
-            "Name of the directory that has test files."
-        )
+        help="Name of the directory that has test files."
     )
     args = parser.parse_args()
     run_sanity_check(args.test_dir)
