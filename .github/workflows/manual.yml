@@ -27,6 +27,9 @@ jobs:
         with:
           python-version: "3.11.9"
 
+      - name: PWD
+        run: pwd
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
