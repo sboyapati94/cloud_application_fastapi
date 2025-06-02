@@ -101,3 +101,25 @@ Working in a command line environment is recommended for ease of use with git an
 
 9. **Model Card**
    - See `starter/model_card.md` for a full description of the model, data, metrics, and caveats.
+
+## Sanity Check for API Test Cases
+
+To verify your API test cases meet the rubric requirements, run the provided sanity check script:
+
+```zsh
+PYTHONPATH=. python starter/sanitycheck.py
+```
+When prompted, enter:
+```
+starter/test_main.py
+```
+If your tests are correct, you should see:
+
+```
+============= Sanity Check Report ===========
+Your test cases look good!
+This is a heuristic based sanity testing and cannot guarantee the correctness of your code.
+You should still check your work against the rubric to ensure you meet the criteria.
+```
+
+If you see errors, follow the script's suggestions to fix your test cases and re-run the check.
