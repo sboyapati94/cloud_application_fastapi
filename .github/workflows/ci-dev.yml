@@ -30,7 +30,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           # Install FastAPI (which brings in the correct Starlette), plus test & lint deps
-          pip install fastapi pytest pytest-cov flake8 httpx joblib
+          pip install fastapi pytest pytest-cov flake8 httpx joblib pandas
 
       - name: Clean __pycache__
         run: find . -type d -name "__pycache__" -exec rm -rf {} +
