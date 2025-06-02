@@ -32,6 +32,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest pytest-cov flake8 fastapi uvicorn
       
+      - name: PWD
+        run: pwd
+
       - name: Run sanity fix
         run: echo 'starter/test_main.py' | PYTHONPATH=. python starter/sanitycheck.py
 
