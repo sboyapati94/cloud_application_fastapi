@@ -35,7 +35,9 @@ jobs:
         run: find . -type d -name "__pycache__" -exec rm -rf {} +
 
       - name: Run sanity fix
-        run: echo 'starter/test_main.py' | PYTHONPATH=. python ./starter/sanitycheck.py
+        run: |
+            export PYTHONPATH=.
+            echo 'starter/test_main.py' | python ./starter/sanitycheck.py
 
       - name: Run flake8
         run: flake8 ./starter --max-line-length=79
