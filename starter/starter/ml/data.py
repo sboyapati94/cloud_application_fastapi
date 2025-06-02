@@ -8,9 +8,9 @@ def process_data(
     label=None,
     training=True,
     encoder=None,
-    lb=None
+    lb=None,
 ):
-    """ Process data for machine learning pipeline.
+    """Process data for machine learning pipeline.
 
     Processes data using one hot encoding for categorical features and
     label binarizer for labels. Can be used in training or inference.

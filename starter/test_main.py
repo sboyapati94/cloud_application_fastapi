@@ -3,10 +3,14 @@ from starter.main import app
 
 client = TestClient(app)
 
+
 def test_get_root():
     response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == {"message": "Welcome to the Census Income Prediction API!"}
+    assert response.json() == {
+        "message": "Welcome to the Census Income Prediction API!"
+    }
+
 
 def test_post_predict_lessthan50k():
     data = {
@@ -23,11 +27,12 @@ def test_post_predict_lessthan50k():
         "capital-gain": 2174,
         "capital-loss": 0,
         "hours-per-week": 40,
-        "native-country": "United-States"
+        "native-country": "United-States",
     }
     response = client.post("/predict", json=data)
     assert response.status_code == 200
     assert response.json()["prediction"] in ["<=50K", ">50K"]
+
 
 def test_post_predict_greaterthan50k():
     data = {
@@ -44,7 +49,7 @@ def test_post_predict_greaterthan50k():
         "capital-gain": 0,
         "capital-loss": 0,
         "hours-per-week": 45,
-        "native-country": "United-States"
+        "native-country": "United-States",
     }
     response = client.post("/predict", json=data)
     assert response.status_code == 200

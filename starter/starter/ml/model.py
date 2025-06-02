@@ -39,20 +39,14 @@ def compute_model_metrics(y, preds):
     recall : float
     fbeta : float
     """
-    fbeta = fbeta_score(
-        y, preds, beta=1, zero_division=1
-    )
-    precision = precision_score(
-        y, preds, zero_division=1
-    )
-    recall = recall_score(
-        y, preds, zero_division=1
-    )
+    fbeta = fbeta_score(y, preds, beta=1, zero_division=1)
+    precision = precision_score(y, preds, zero_division=1)
+    recall = recall_score(y, preds, zero_division=1)
     return precision, recall, fbeta
 
 
 def inference(model, X):
-    """ Run model inferences and return the predictions.
+    """Run model inferences and return the predictions.
 
     Inputs
     ------
@@ -68,13 +62,16 @@ def inference(model, X):
     return model.predict(X)
 
 
-def compute_slice_metrics(data, model, encoder, lb, categorical_features, label="salary"):
+def compute_slice_metrics(
+    data, model, encoder, lb, categorical_features, label="salary"
+):
     """
     Computes model performance metrics on slices of the data for each categorical feature.
     Returns a dictionary with metrics for each slice.
     """
     from starter.ml.data import process_data
     from starter.ml.model import compute_model_metrics, inference
+
     results = {}
     for feature in categorical_features:
         results[feature] = {}
@@ -83,7 +80,12 @@ def compute_slice_metrics(data, model, encoder, lb, categorical_features, label=
             if slice_df.shape[0] == 0:
                 continue
             X_slice, y_slice, _, _ = process_data(
-                slice_df, categorical_features=categorical_features, label=label, training=False, encoder=encoder, lb=lb
+                slice_df,
+                categorical_features=categorical_features,
+                label=label,
+                training=False,
+                encoder=encoder,
+                lb=lb,
             )
             preds = inference(model, X_slice)
             precision, recall, fbeta = compute_model_metrics(y_slice, preds)
@@ -91,6 +93,6 @@ def compute_slice_metrics(data, model, encoder, lb, categorical_features, label=
                 "precision": precision,
                 "recall": recall,
                 "fbeta": fbeta,
-                "count": len(y_slice)
+                "count": len(y_slice),
             }
     return results

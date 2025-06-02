@@ -1,10 +1,11 @@
+import os
+import joblib
+import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
-from typing import Literal
-import joblib
-import numpy as np
-import pandas as pd
-import os
+
+from starter.starter.ml.data import process_data
+from starter.starter.ml.model import inference
 
 # Define categorical features (must match training)
 CAT_FEATURES = [
@@ -17,6 +18,7 @@ CAT_FEATURES = [
     "sex",
     "native-country",
 ]
+
 
 # Pydantic model for input (use alias for hyphens)
 class CensusInput(BaseModel):
@@ -51,9 +53,10 @@ class CensusInput(BaseModel):
                 "capital-gain": 2174,
                 "capital-loss": 0,
                 "hours-per-week": 40,
-                "native-country": "United-States"
+                "native-country": "United-States",
             }
         }
+
 
 # Load model and encoders
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "model")
@@ -61,14 +64,13 @@ model = joblib.load(os.path.join(MODEL_DIR, "model.joblib"))
 encoder = joblib.load(os.path.join(MODEL_DIR, "encoder.joblib"))
 lb = joblib.load(os.path.join(MODEL_DIR, "lb.joblib"))
 
-from starter.starter.ml.data import process_data
-from starter.starter.ml.model import inference
-
 app = FastAPI()
+
 
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the Census Income Prediction API!"}
+
 
 @app.post("/predict")
 def predict(input_data: CensusInput):
@@ -77,7 +79,12 @@ def predict(input_data: CensusInput):
     df = pd.DataFrame([data_dict])
     # Process data
     X, _, _, _ = process_data(
-        df, categorical_features=CAT_FEATURES, label=None, training=False, encoder=encoder, lb=lb
+        df,
+        categorical_features=CAT_FEATURES,
+        label=None,
+        training=False,
+        encoder=encoder,
+        lb=lb,
     )
     # Predict
     pred = inference(model, X)

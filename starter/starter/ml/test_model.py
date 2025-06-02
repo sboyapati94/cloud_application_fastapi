@@ -1,9 +1,12 @@
 import numpy as np
 import pandas as pd
 import joblib
-import pytest
-from sklearn.ensemble import RandomForestClassifier
-from starter.starter.ml.model import train_model, compute_model_metrics, inference, compute_slice_metrics
+from starter.starter.ml.model import (
+    train_model,
+    compute_model_metrics,
+    inference,
+    compute_slice_metrics,
+)
 
 
 def test_train_model():
@@ -49,7 +52,9 @@ def test_compute_slice_metrics():
         "sex",
         "native-country",
     ]
-    results = compute_slice_metrics(data, model, encoder, lb, cat_features, label="salary")
+    results = compute_slice_metrics(
+        data, model, encoder, lb, cat_features, label="salary"
+    )
     # Check that results are returned for at least one feature and value
     assert isinstance(results, dict)
     found = False

@@ -1,9 +1,11 @@
 """
 Script to compute and save model metrics on data slices
 """
+
 import pandas as pd
 import joblib
 from starter.ml.model import compute_slice_metrics
+
 
 def main():
     # Load data and model artifacts
@@ -40,7 +42,8 @@ def main():
                 f.write(f"Precision: {metrics['precision']:.3f}\n")
                 f.write(f"Recall: {metrics['recall']:.3f}\n")
                 f.write(f"F1 (beta=1): {metrics['fbeta']:.3f}\n")
-            f.write("\n" + "="*50 + "\n")
+            f.write("\n" + "=" * 50 + "\n")
+
 
 if __name__ == "__main__":
     main()
