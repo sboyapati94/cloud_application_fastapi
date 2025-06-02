@@ -37,13 +37,20 @@ def run_sanity_check(test_dir):  # noqa: D401
     # ------------------------------------------------------------------
     assert path.exists(filepath), (f"File {filepath} does not exist.")
 
+    # Add project root to sys.path
+    project_root = os.path.abspath(os.path.join(os.path.dirname(filepath), "../.."))
+    if project_root not in sys.path:
+        sys.path.insert(0, project_root)
+
     sys.path.insert(0, os.path.abspath(os.path.dirname(filepath)))
     sys.path.insert(
         0,
         os.path.abspath(os.path.join(os.path.dirname(filepath), "..")),
     )
 
-    module_name = path.splitext(path.basename(filepath))[0]
+    # Convert path to module name (e.g., starter/test_main.py -> starter.test_main)
+    module_path = os.path.relpath(filepath, project_root)
+    module_name = module_path.replace("/", ".").replace("\\", ".").rsplit(".", 1)[0]
     module = importlib.import_module(module_name)
 
     # ------------------------------------------------------------------
